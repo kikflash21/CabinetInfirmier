@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cabinet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.univ-grenoble-alpes.fr/l3miage/medical">
+  <nom>Cabinet Fantastique</nom>
+  <adresse>
+    <étage>0</étage>
+    <numéro>999</numéro>
+    <rue>Rue du cabinet fantastique</rue>
+    <codePostal>38400</codePostal>
+    <ville>Saint Martin d'Hères</ville>
+  </adresse>
+  <infirmiers>
+    <infirmier id="001">
+      <nom>TENNESSEE</nom>
+      <prénom>Alves</prénom>
+      <photo>alves.png</photo>
+    </infirmier>
+    <infirmier id="002">
+      <nom>GATOR</nom>
+      <prénom>Ali</prénom>
+      <photo>aligator.png</photo>
+    </infirmier>
+    <infirmier id="003">
+      <nom>Ochon</nom>
+      <prénom>Paul</prénom>
+      <photo>paul.png</photo>
+    </infirmier>
+  </infirmiers>
+  <patients>
+    <patient>
+      <nom>BARKOK</nom>
+      <prénom>Omar</prénom>
+      <sexe>M</sexe>
+      <naissance>2002-03-23</naissance>
+      <numéro>102039999988877</numéro>
+      <adresse>
+        <étage>1</étage>
+        <numéro>125</numéro>
+        <rue>allée Condillac</rue>
+        <codePostal>38400</codePostal>
+        <ville>Saint Martin d'Hères</ville>
+      </adresse>
+      <visite intervenant="002" date="2025-03-23">
+        <acte id="101" />
+      </visite>
+    </patient>
+    <patient>
+      <nom>Orouge</nom>
+      <prénom>Elvire</prénom>
+      <sexe>F</sexe>
+      <naissance>1982-03-08</naissance>
+      <numéro>282036912305243</numéro>
+      <adresse>
+        <étage>0</étage>
+        <numéro>0</numéro>
+        <rue>Rond-Point de la Croix de vie</rue>
+        <codePostal>38700</codePostal>
+        <ville>La Tronche</ville>
+      </adresse>
+      <visite date="2015-12-08">
+        <acte id="300" />
+      </visite>
+    </patient>
+    <patient>
+      <nom>Pien</nom>
+      <prénom>Oscare</prénom>
+      <sexe>M</sexe>
+      <naissance>1975-03-25</naissance>
+      <numéro>175037306569252</numéro>
+      <adresse>
+        <étage>0</étage>
+        <numéro>0</numéro>
+        <rue>rue Casimir Bernier</rue>
+        <codePostal>38000</codePostal>
+        <ville>Grenoble</ville>
+      </adresse>
+      <visite intervenant="001" date="2015-12-08">
+        <acte id="101" />
+        <acte id="104" />
+      </visite>
+    </patient>
+    <patient>
+      <nom>Kapoëtla</nom>
+      <prénom>Xavier</prénom>
+      <sexe>M</sexe>
+      <naissance>2011-08-02</naissance>
+      <numéro>111083306303521</numéro>
+      <adresse>
+        <étage>0</étage>
+        <numéro>25</numéro>
+        <rue>rue des Martyrs</rue>
+        <codePostal>38042</codePostal>
+        <ville>Grenoble</ville>
+      </adresse>
+      <visite intervenant="001" date="2015-12-08">
+        <acte id="111" />
+      </visite>
+    </patient>
+    <patient>
+      <nom>KULLS</nom>
+      <prénom>Kass</prénom>
+      <sexe>M</sexe>
+      <naissance>2005-01-08</naissance>
+      <numéro>105011356797864</numéro>
+      <adresse>
+        <étage>3</étage>
+        <numéro>66</numéro>
+        <rue>route du 66</rue>
+        <codePostal>75000</codePostal>
+        <ville>Paris</ville>
+      </adresse>
+      <visite intervenant="001" date="2026-01-01">
+        <acte id="105" />
+      </visite>
+    </patient>
+  </patients>
+</cabinet>

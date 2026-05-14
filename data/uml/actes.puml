@@ -1,0 +1,55 @@
+@startuml
+
+'skinparam linetype ortho
+'l'instruction au dessus est pour avoir des lignes orthogonales...
+
+package XMLSchema #DDDDDD {
+    class string
+}
+package URIActes {
+    class Ngap {
+        types : Types
+        actes : Actes
+    }
+    note right of Ngap
+        «racine» ngap
+    end note
+    class Acte {
+        {unique} {attribute} id : int {>0}
+        {attribute} type : int {>0}
+        {attribute} clé : CléActe
+        {attribute} coef : double {>0}
+    }
+    note right of Acte::type
+        ∈ //Type/@id
+    end note
+    
+    class Actes {
+        actes : Acte[]
+    }
+    
+    class Type {
+        {unique} {attribute} id : int {>0}
+    }
+    class Types {
+        types : Type[]
+    }
+    
+    enum CléActe {
+        AMI
+        AIS
+        DI
+    }
+    
+    Ngap *--"1" Types
+    Ngap *--"1" Actes
+    
+    Actes *--"*" Acte : liste
+    Acte "*"*--"1" CléActe
+    
+    Types *--"*" Type : liste
+    
+    CléActe --|> string
+}
+
+@enduml

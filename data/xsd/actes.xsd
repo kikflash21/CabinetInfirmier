@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:act="http://www.univ-grenoble-alpes.fr/l3miage/actes"
+        targetNamespace="http://www.univ-grenoble-alpes.fr/l3miage/actes"
+        elementFormDefault="qualified"
+>
+    <element name="ngap" type="act:Ngap">
+        <!-- Clef unicité id d'un acte -->
+        <key name="clefIdActe">
+            <selector xpath="act:actes/act:acte"/>
+            <field xpath="@id"/>
+        </key>
+        
+        <!-- Clef unicité id d'un type -->
+        <key name="clefIdType">
+            <selector xpath="act:types/act:type"/>
+            <field xpath="@id"/>
+        </key>
+        
+        <!-- Le type d'un acte doit être un id d'un type existant -->
+        <keyref name="foreignKeyActeTypeToTypeId" refer="act:clefIdType">
+            <selector xpath="act:actes/act:acte"/>
+            <field xpath="@type"/>
+        </keyref>
+    </element>
+
+    
+    <!-- Type de la racine  -->
+    <complexType name="Ngap">
+        <sequence>
+            <element name="types" type="act:Types"/>
+            <element name="actes" type="act:Actes"/>
+        </sequence>
+    </complexType>
+    
+    <!-- Types -->
+    <complexType name="Types">
+        <sequence>
+            <element name="type" type="act:Type" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Type" mixed="true">
+        <attribute name="id" type="act:IdTypes" use="required"/>
+    </complexType>
+    
+    <!-- Actes -->
+    <complexType name="Actes">
+        <sequence>
+            <element name="acte" type="act:Acte" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Acte" mixed="true">
+        <attribute name="id" type="act:IdActes" use="required"/>
+        <attribute name="type" type="act:IdTypes" use="required"/>
+        <attribute name="clé" type="act:Clé" use="required"/>
+        <attribute name="coef" type="double" use="required"/>
+    </complexType>
+    
+    <!-- simple types -->
+    
+    <simpleType name="IdTypes">
+        <restriction base="string">
+            <pattern value="[a-z]{2}"/> 
+        </restriction>
+    </simpleType>
+    
+    <simpleType name="IdActes">
+        <restriction base="string">
+            <pattern value="\d{3}"/>
+        </restriction>
+    </simpleType>
+    
+    <simpleType name="Clé">
+        <restriction base="string">
+            <enumeration value="AMI"/>
+            <enumeration value="AIS"/>
+            <enumeration value="DI"/>
+        </restriction>
+    </simpleType>
+
+</schema>

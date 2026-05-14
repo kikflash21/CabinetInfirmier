@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:pat="http://www.univ-grenoble-alpes.fr/l3miage/patient"
+        targetNamespace="http://www.univ-grenoble-alpes.fr/l3miage/patient"
+        elementFormDefault="qualified"
+>
+    <element name="patient" type="pat:Patient"/>
+            
+    <complexType name="Patient">
+        <sequence>
+            <element name="nom" type="string"/>
+            <element name="prénom" type="string"/>
+            <element name="sexe" type="pat:Sexe"/>
+            <element name="naissance" type="date"/>
+            <element name="numéroSS" type="pat:NuméroSS"/>
+            <element name="adresse" type="pat:Adresse"/>
+            <element name="visite" type="pat:Visite" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <!-- Sexe -->
+    <simpleType name="Sexe">
+        <restriction base="string">
+            <enumeration value="F"/>
+            <enumeration value="M"/>
+        </restriction>
+    </simpleType>
+
+    <!-- NuméroSS -->
+    <simpleType name="NuméroSS">
+        <restriction base="string">
+            <pattern value="[12]\d{2}([1][0-2]|[0][1-9])\d{5}\d{3}\d[1-7]"/>
+        </restriction>
+    </simpleType>
+
+    <!-- Adresse -->
+    <complexType name="Adresse">
+        <sequence>
+            <element name="étage" type="positiveInteger" minOccurs="0"/>
+            <element name="numéro" type="positiveInteger" minOccurs="0"/>
+            <element name="rue" type="string"/>
+            <element name="codePostal" type="pat:CodePostal"/>
+            <element name="ville" type="string"/>
+        </sequence>
+    </complexType>
+    <simpleType name="CodePostal">
+        <restriction base="string">
+            <pattern value="\d{5}"/>
+        </restriction>
+    </simpleType>
+    
+    <!-- Visite -->
+    <complexType name="Visite">
+        <sequence>
+            <element name="intervenant" type="pat:Intervenant"/>
+            <element name="acte" type="string" maxOccurs="unbounded"/>
+        </sequence>
+        <attribute name="date" type="date" use="required"/>
+    </complexType>
+    
+    <!-- Intervenant -->
+    <complexType name="Intervenant">
+        <sequence>
+            <element name="nom" type="string"/>
+            <element name="prénom" type="string"/>
+        </sequence>
+    </complexType>
+    
+</schema>
+    

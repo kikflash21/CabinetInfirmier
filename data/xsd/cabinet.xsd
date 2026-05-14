@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:cab="http://www.univ-grenoble-alpes.fr/l3miage/medical"
+        xmlns:act="http://www.univ-grenoble-alpes.fr/l3miage/actes"
+        
+        targetNamespace="http://www.univ-grenoble-alpes.fr/l3miage/medical"
+        elementFormDefault="qualified" 
+>
+    
+    <!-- Utilisé pour le type de l'attribut du complexType "Acte" du cabinet -->
+    <!-- C'est le "bricolage" que j'ai fait car je n'ai pas réussi à lier une clef d'existance entre cabinet et actes... -->
+    <import namespace="http://www.univ-grenoble-alpes.fr/l3miage/actes" schemaLocation="./actes.xsd"/>
+    
+    <!-- ······ Element racine du cabinet ······ -->
+    <element name="cabinet" type="cab:Cabinet">
+        <!-- Clef unicité id infirmier -->
+        <key name="clefIdInfirmier">
+            <selector xpath="cab:infirmiers/cab:infirmier"/>
+            <field xpath="@id"/>
+        </key>
+        
+        <!-- Clef unicité numéroSecuritéSociale d'un patient -->
+        <key name="clefNuméroSecuritéSociale">
+            <selector xpath="cab:patients/cab:patient/cab:numéro"/>
+            <field xpath="."/>
+        </key>
+        
+        <!-- L'intervenant dans une visite doit être un id d'infirmier existant -->
+        <keyref name="foreignKeyIdInfirmier" refer="cab:clefIdInfirmier">
+            <selector xpath="cab:patients/cab:patient/cab:visite"/>
+            <field xpath="@intervenant"/>
+        </keyref>
+    </element>
+
+    <!-- ······ Elements racines que j'utilise pour tester mes serializations ······ -->
+    <element name="adresse" type="cab:Adresse"/>
+    <element name="infirmier" type="cab:Infirmier"/>
+    <element name="infirmiers" type="cab:Infirmiers"/>
+    <element name="patient" type="cab:Patient"/>
+    <element name="patients" type="cab:Patients"/>
+    <element name="visite" type="cab:Visite"/>
+    <element name="acte" type="cab:Acte"/>
+    <!-- ··········································································· -->
+    
+    <!-- Type de la racine du cabinet -->
+    <complexType name="Cabinet">
+        <sequence>
+            <element name="nom" type="string"/>
+            <element name="adresse" type="cab:Adresse"/>
+            <element name="infirmiers" type="cab:Infirmiers"/>
+            <element name="patients" type="cab:Patients"/>
+        </sequence>
+    </complexType>
+
+    
+    <!-- Adresse -->
+    <complexType name="Adresse">
+        <sequence>
+            <element name="étage" type="unsignedInt" minOccurs="0"/>
+            <element name="numéro" type="unsignedInt" minOccurs="0"/> 
+            <element name="rue" type="string"/>
+            <element name="codePostal" type="cab:CodePostal"/>
+            <element name="ville" type="string"/>
+        </sequence>
+    </complexType>
+
+    <!-- Infirmiers -->
+    <complexType name="Infirmiers">
+        <sequence>
+            <element name="infirmier" type="cab:Infirmier" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="Infirmier">
+        <sequence>
+            <element name="nom" type="string"/>
+            <element name="prénom" type="string"/>
+            <element name="photo" type="cab:Photo"/>
+        </sequence>
+        <attribute name="id" type="unsignedInt" use="required"/>
+    </complexType>
+
+    <!-- Patients -->
+    <complexType name="Patients">
+        <sequence>
+            <element name="patient" type="cab:Patient" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Patient">
+        <sequence>
+            <element name="nom" type="string"/>
+            <element name="prénom" type="string"/>
+            <element name="sexe" type="cab:Sexe"/>
+            <element name="naissance" type="date"/>
+            <element name="numéro" type="cab:NuméroSecuritéSociale"/>
+            <element name="adresse" type="cab:Adresse"/>
+            <element name="visite" type="cab:Visite" maxOccurs="unbounded"/> 
+        </sequence>
+    </complexType>
+
+    <!-- Visite -->
+    <complexType name="Visite">
+        <sequence>
+            <!-- une visite peut avoir plusieurs actes -->
+            <element name="acte" type="cab:Acte" maxOccurs="unbounded"/>
+        </sequence>
+        <attribute name="intervenant" type="unsignedInt"/>
+        <attribute name="date" type="date" use="required"/>
+    </complexType>
+
+    <!-- Acte -->
+    <complexType name="Acte">
+        <attribute name="id" type="act:IdActes"/>
+    </complexType>
+    
+    <!-- SIMPLE TYPES -->
+
+    <!-- CodePostal -->
+    <simpleType name="CodePostal">
+        <restriction base="string">
+            <pattern value="\d{5}"/>
+        </restriction>
+    </simpleType>
+    
+    <!-- Photo -->
+    <simpleType name="Photo">
+        <restriction base="string"/> <!-- on se restreint simplement a un string -->
+    </simpleType>
+
+    <!-- Sexe -->
+    <simpleType name="Sexe">
+        <restriction base="string">
+            <enumeration value="M"/>
+            <enumeration value="F"/>
+        </restriction>
+    </simpleType>
+
+    <!-- NuméroSecuritéSociale -->
+    <simpleType name="NuméroSecuritéSociale">
+        <restriction base="string">
+            <pattern value="[12]\d{2}([1][0-2]|[0][1-9])\d{5}\d{3}\d[1-7]"/>
+        </restriction>
+    </simpleType>
+    
+</schema>

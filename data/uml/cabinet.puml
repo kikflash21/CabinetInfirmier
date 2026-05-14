@@ -1,0 +1,183 @@
+@startuml
+
+'skinparam linetype ortho
+'l'instruction au dessus est pour avoir des lignes orthogonales...
+
+package XMLSchema #DDDDDD {
+    class string
+    class date
+    class int
+}
+
+package URICabinet {
+    note as noteHeritagePersonne
+        note : on pourrait rajouter une classe «Personne».
+        Donc, Patient et Infirmier hériteraient de cette classe.
+        Mais ce n'ai pas dans le cahier des charges.
+    end note
+    
+    class Cabinet {
+        nom : string
+        adresse : Adresse
+        infirmiers : Infirmiers
+        patients : Patients
+    }
+    note left of Cabinet
+        <<racine>> cabinet
+    end note
+    
+    class Patients {
+        patients : Patient[]
+    }
+    class Infirmiers {
+        infirmiers : Infirmier[]
+    }
+    
+    class Infirmier {
+        {unique}{attribute} id : int {>=0} 
+        nom : string
+        prénom : string
+        photo : Photo
+    }
+    class Photo <<pattern>> {
+        string
+    }
+    note right of Photo
+        À changer éventuellement
+    end note
+    
+    class Patient {
+        nom : string
+        prénom : string
+        sexe : Sexe
+        naissance : date
+        numéro : NuméroSecuritéSociale
+        adresse : Adresse
+    }
+    
+    class Adresse {
+        {optional} étage : int {>0}
+        {optional} numéro : int {>0}
+        rue : string
+        codePostal : CodePostal
+        ville : string
+    }
+    
+    Enum Sexe  {
+        M
+        F
+    }
+    
+    class NuméroSecuritéSociale <<pattern>> {
+        [12] \d{2} ([1][0-2]|[0][1-9]) \d{5} \d{3} \d[1-7]
+    }
+    note top of NuméroSecuritéSociale
+        1er chiffre : Sexe (1 pour homme, 2 pour femme).
+        2e et 3e chiffres : Année de naissance.
+        4e et 5e chiffres : Mois de naissance.
+        6e à 10e chiffres : Code INSEE de lieu de naissance.
+        11e à 13e chiffres : Numéro d'ordre de naissance.
+        14e et 15e chiffres : Clé de contrôle.
+    end note
+    note bottom of NuméroSecuritéSociale
+        On considère uniquement les codes postaux
+        standards, composés de cinq chiffres.
+    end note
+    
+    class CodePostal <<pattern>> {
+        \d{5}
+    }
+    note right of CodePostal
+        un nombre à 5 chiffres
+    end note
+    
+    class Visite {
+        {attribute} date : date
+        {attribute} intervenant : string
+        acte : Acte
+    }
+    note left of Visite::intervenant
+        ∈ //Infirmier/@id
+    end note
+    
+    class Acte {
+        {attribute} id : int {>0}
+    }
+    note right of Acte::id
+        ∈ URIActes://Acte/@id
+    end note
+    
+    Cabinet *--"1" Infirmiers
+    Cabinet *--"1" Patients
+    Cabinet *--"1" Adresse
+    
+    Infirmier *-- "1" Photo
+    
+    Infirmiers *-- "*" Infirmier : liste
+    
+    Patient *--"1" Sexe
+    Patient "1"*--"1..*" Visite
+    Patient "1"*--"1" NuméroSecuritéSociale
+    Patient *--"1" Adresse
+    
+    Patients *-- "*" Patient : liste
+    
+    Visite "0..*"*--"1..*" Acte
+    
+    Adresse "*" *--"1" CodePostal
+    
+    Sexe --|> string
+    NuméroSecuritéSociale --|> string
+    CodePostal --|> string
+    Photo --|> string
+}
+
+
+
+package URIActes {
+    class Ngap {
+        types : Types
+        actes : Actes
+    }
+    note right of Ngap
+        «racine» ngap
+    end note
+    class Acte {
+        {unique} {attribute} id : int {>=0}
+        {attribute} type : int {>0}
+        {attribute} clé : CléActe
+        {attribute} coef : double {>0}
+    }
+    note right of Acte::type
+        ∈ //Type/@id
+    end note
+    
+    class Actes {
+        actes : Acte[]
+    }
+    
+    class Type {
+        {unique} {attribute} id : int {>=0}
+    }
+    class Types {
+        types : Type[]
+    }
+    
+    enum CléActe {
+        AMI
+        AIS
+        DI
+    }
+    
+    Ngap *--"1" Types
+    Ngap *--"1" Actes
+    
+    Actes *--"*" Acte : liste
+    Acte "*"*--"1" CléActe
+    
+    Types *--"*" Type : liste
+    
+    CléActe --|> string
+}
+
+@enduml

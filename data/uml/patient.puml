@@ -1,0 +1,74 @@
+@startuml
+
+skinparam linetype ortho
+
+package XMLSchema #DDDDDD {
+    class string
+    class date
+}
+package URIPatient {
+    class Patient {
+        nom : string
+        prénom : string
+        sexe : Sexe
+        naissance : date
+        numéroSS : NuméroSS
+        adresse : Adresse
+    }
+    note left of Patient
+    «racine» patient
+    end note
+    
+    class Visite {
+        {attribute} date : date
+        intervenant : Intervenant
+        acte : string
+    }
+    
+    class Intervenant {
+        nom : string
+        prénom : string
+    }
+    
+    class Adresse {
+        {optional} étage : int {>0}
+        {optional} numéro : int {>0}
+        rue : string
+        codePostal : CodePostal
+        ville : string
+    }
+    class CodePostal <<pattern>> {
+        \d{5}
+    }
+    
+    class NuméroSS <<pattern>> {
+        [12] \d{2} ([1][0-2]|[0][1-9]) \d{5} \d{3} \d[1-7]
+    }
+    note top of NuméroSS
+        1er chiffre : Sexe (1 pour homme, 2 pour femme).
+        2e et 3e chiffres : Année de naissance.
+        4e et 5e chiffres : Mois de naissance.
+        6e à 10e chiffres : Code INSEE de lieu de naissance.
+        11e à 13e chiffres : Numéro d'ordre de naissance.
+        14e et 15e chiffres : Clé de contrôle.
+    end note   
+    
+    Enum Sexe  {
+            M
+            F
+    }
+    
+    
+    Patient *-- "*" Visite
+    Patient *-- "1" Adresse
+    Patient *-- "1" Sexe
+    Patient *-- "1" NuméroSS
+    
+    Visite *-- "1" Intervenant
+    
+    Adresse *-- "1" CodePostal
+    
+    Sexe --|> string
+    CodePostal --|> string
+}
+@enduml

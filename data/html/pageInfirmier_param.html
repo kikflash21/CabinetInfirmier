@@ -1,0 +1,108 @@
+﻿<html>
+  <head>
+    <title>page infirmiere</title>
+    <link rel="stylesheet" href="../css/pageInfirmier.css" />
+  </head>
+  <body>
+    <div class="classPatient">
+      <h1>Bonjour</h1>
+      <h3>Ali</h3>
+      <h1>, aujourd'hui, vous avez</h1>
+      <h3>1</h3>
+      <h1>patients.</h1>
+      <h1>Voici la liste des patients à visiter</h1>
+    </div>
+    <div>
+      <div class="classPatient">
+        <table>
+          <tr>
+            <th>Nom</th>
+            <td>BARKOK</td>
+          </tr>
+          <tr>
+            <th>Prénom</th>
+            <td>Omar</td>
+          </tr>
+          <tr>
+            <th>Sexe</th>
+            <td>M</td>
+          </tr>
+          <tr>
+            <th>Date de naissance</th>
+            <td>2002-03-23</td>
+          </tr>
+          <tr>
+            <th>Numéro de sécurité sociale</th>
+            <td>102039999988877</td>
+          </tr>
+          <tr>
+            <th>Adresse</th>
+            <td>
+              <span>1è étage, 125 allée Condillac, 38400 Saint Martin d'Hères</span>
+            </td>
+          </tr>
+        </table>
+        <h2>Liste des soins à effectuer pour ce patient</h2>
+        <table>
+          <tr>
+            <th>Date</th>
+            <th>Actes</th>
+          </tr>
+          <tr>
+            <td>2025-01-23</td>
+            <td>
+              <li>
+            Inection intraveineuse directe isolée.
+        </li>
+              <li>
+            Prélèvement aseptique cutané ou de sécrétions muqueuses, prélèvement
+            de selles ou d'urine pour examens sytologiques, bactériologiques, mycologiques.
+        </li>
+            </td>
+          </tr>
+          <tr>
+            <td>2025-02-23</td>
+            <td>
+              <li>
+            Injection en goutte à goutte par voie rectale.
+        </li>
+              <li>
+            Elaboration de la démache de soins infirmiers à domicile, planification
+            des soins et rédaction du résumé de la démarche de soins infirimiers.
+        </li>
+            </td>
+          </tr>
+          <tr>
+            <td>2025-03-23</td>
+            <td>
+              <li>
+            Prélèvement par ponction veineuse directe
+        </li>
+            </td>
+          </tr>
+        </table>
+        <h4>
+          <u>Facture</u> :</h4>
+        <script type="text/javascript">
+                function openFacture(prenom, nom, actes) {
+                    var width = 500;
+                    var height = 300;
+                    if (window.innerWidth) {
+                        var left = (window.innerWidth-width)/2;
+                        var top = (window.innerHeight-height)/2;
+                    } else {
+                        var left = (document.body.clientWidth-width)/2;
+                        var top = (document.body.clientHeight-height)/2;
+                    }
+                    var factureWindow = window.open('','facture','menubar=yes, scrollbars = yes, top='+top+', left='+left+', width='+width+', height='+height +'');
+                    factureText = "Facture pour : " + prenom + " " + nom;
+                    factureWindow.document.write(factureText)
+                }
+            </script>
+        <button onclick="&#xA;                    openFacture('Omar',&#xA;                    'BARKOK',&#xA;                    '')&#xA;                ">
+                Facture
+            </button>
+      </div>
+    </div>
+  </body>
+</html>
